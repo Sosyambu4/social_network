@@ -1,95 +1,79 @@
 import React from "react";
 import {v1} from "uuid";
-
-
-
+import {access} from "fs";
 
 export type DialogItemType = {
     id: string;
     name: string;
 }
-
-
 export type StateType = {
  profilePage: ProfileType;
  messagesPage:DialogsPageType;
 
-
-};
+}
 export type DialogsPageType = {
     dialogs: Array<DialogType>;
     messages: Array<MessageType>
-};
-
+}
 export type DialogType = {
     name: string;
     id: string;
-};
+}
 export type MessageType = {
     message: string;
     id?:string;
 }
 export type ProfileType = {
     posts:Array<PostsType>
-   newPostText: string
+    newPostText: string;
+
 }
 export type PostsType = {
     message: string;
     likesCount: number;
         id?: string;
 }
+export type StoreType = {
+    _state: StateType;
+    addPost: (postText: string) => void;
+    updateNewPostText: (newText: string) => void;
+    getState: () => StateType;
+    subscriber: (observer: () => void) => void;
+    callSubscriber: () => void;
+    dispatch: (action: ActionsTypes) => void;
 
-
-
-/*export type PostType = {
-    message: string
-    likesCount: number
-    id: string
-}*/
-
-/*let store = {
-    _state: StateType = {
-    profilePage: {
-        posts: [
-            {id: v1(), message: "Hi,how are you?", likesCount: 12},
-            {id: v1(), message: "It's my first post", likesCount: 10}],
-    },
-    messagesPage: {
-        messages: [
-            {id: v1(), message: 'Hi'},
-            {id: v1(), message: 'How is your it-kamasutra'},
-            {id: v1(), message: 'Hi'},
-            {id: v1(), message: 'Yo'}],
-        dialogs: [
-            {id: v1(), name: 'Tomek'},
-            {id: v1(), name: 'Kamila'},
-            {id: v1(), name: 'Pzemek'},
-            {id: v1(), name: 'Pawel'},
-            {id: v1(), name: 'Karolina'},
-            {id: v1(), name: 'Wladyslaw'}
-        ]
-    }
-
-},
-    rerenderEntireTree ()  {
-        console.log("State changed")};
-    _addPost  (postText: string) => {
-        let newPost: PostsType = {
-            id:v1(),
-            message: postText,
-            likesCount: 0
-        }
-        state.profilePage.posts.push(newPost) ;
-        rerenderEntireTree();
-
-    };
-}*/
-
-let rerenderEntireTree = () => {
-    console.log("State changed")
 }
 
-export const state: StateType = {
+export type ActionsTypes = ReturnType<typeof addPostAC> | ReturnType<typeof newTextChangeHandlerAC>
+
+/*type AddPostActionType = {
+    type: 'ADD-POST';
+    postText: string
+}*/
+
+
+/*
+type updateNewPostTextType = {
+    type: 'UPDATE-NEW-POST-TEXT';
+    newText: string
+}*/
+
+export const addPostAC = (postText: string) => {
+    return {
+        type: "ADD-POST",
+        postText: postText
+    } as const
+}
+
+export const newTextChangeHandlerAC = (newText: string) => {
+    return {
+        type: 'UPDATE-NEW-POST-TEXT',
+        newText: newText
+    } as const
+}
+
+export const store: StoreType  = {
+    _state: {
     profilePage: {
         newPostText: "",
         posts: [
@@ -111,33 +95,52 @@ export const state: StateType = {
             {id: v1(), name: 'Wladyslaw'}
         ]
     }
+},
+    callSubscriber() {
+        console.log('Test')
+    },
 
-}
+    addPost (postText: string) {
 
-export const addPost = (postText: string) => {
-    let newPost: PostsType = {
-        id:v1(),
-        message: postText,
-        likesCount: 0
+        const newPost: PostsType = {
+            id:v1(),
+            message: this._state.profilePage.newPostText = postText,
+            likesCount: 0
+        }
+        this._state.profilePage.posts.push(newPost)
+        this._state.profilePage.newPostText = "";
+        this.callSubscriber()
+    },
+    updateNewPostText (newText: string)  {
+
+        this._state.profilePage.newPostText = newText;
+        this.callSubscriber();
+
+    },
+
+    subscriber(observer) {
+        this.callSubscriber = observer
+    },
+    getState() {
+        return this._state
+    },
+    dispatch(action) { //type: 'ADD-POST'}
+        if(action.type === 'ADD-POST') {
+            const newPost: PostsType = {
+                id:v1(),
+                message: this._state.profilePage.newPostText = action.postText,
+                likesCount: 0
+            }
+            this._state.profilePage.posts.push(newPost)
+            this._state.profilePage.newPostText = "";
+            this.callSubscriber()
+        } else if (action.type === 'UPDATE-NEW-POST-TEXT') {
+            this._state.profilePage.newPostText = action.newText;
+            this.callSubscriber();
+        };
+
     }
-    state.profilePage.posts.push(newPost) ;
-    rerenderEntireTree();
-
-};
-
-export const updateNewPostText = (newText: string) => {
-
-    state.profilePage.newPostText = newText ;
-    rerenderEntireTree();
-
-};
-export const ChangeAddPost = (newText: string) => {
-    state.profilePage.newPostText = newText;
-    rerenderEntireTree()
 }
 
-export const subscribe =  (observer: () => void) => {
-    rerenderEntireTree = observer;
-}
 
-export default state;
+export default store;

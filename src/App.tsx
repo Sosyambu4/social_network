@@ -5,17 +5,14 @@ import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import Profile from './components/Profile/Profile';
 import {BrowserRouter, Route} from "react-router-dom";
-import {ChangeAddPost, StateType} from "./redux/state";
+import {ActionsTypes, store, StoreType} from "./redux/state";
 import {News} from './components/New/New';
 import {Music} from "./components/Music/Music";
 import {Settings} from "./components/Setting/Setting";
 
 export type AppType = {
-    state: StateType;
-    addPost: (postText: string) => void;
-    updateNewPostText: (newText: string) => void
-    /*ChangeAddPost:(newText: string) => void;*/
-
+    state:StoreType;
+    dispatch: (action: ActionsTypes) => void;
 
 }
 const App = (props: AppType) => {
@@ -26,10 +23,9 @@ const App = (props: AppType) => {
                 <Header/>
                 <Navbar/>
                 <div className='app-wrapper-content'>
-                    <Route path='/dialogs' render={() => <Dialogs stateMessagesPage={props.state.messagesPage}/>}/>
+                    <Route path='/dialogs' render={() => <Dialogs stateMessagesPage={props.state._state.messagesPage}/>}/>
                     <Route path='/profile'
-                           render={() => <Profile stateProfilePage={props.state.profilePage} addPost={props.addPost} updateNewPostText={props.updateNewPostText}
-                                                  ChangeAddPost={ChangeAddPost}/>}/>
+                           render={() => <Profile stateProfilePage={props.state._state.profilePage} dispatch={props.state.dispatch.bind(props.state)}/>}/>
                     <Route path='/news' render={() => <News/>}/>
                     <Route path='/music' render={() => <Music/>}/>
                     <Route path='/settings' render={() => <Settings/>}/>
