@@ -11,7 +11,7 @@ import {Music} from "./components/Music/Music";
 import {Settings} from "./components/Setting/Setting";
 
 export type AppType = {
-    state:StoreType;
+    state: StoreType;
     dispatch: (action: ActionsTypes) => void;
 
 }
@@ -23,9 +23,11 @@ const App = (props: AppType) => {
                 <Header/>
                 <Navbar/>
                 <div className='app-wrapper-content'>
-                    <Route path='/dialogs' render={() => <Dialogs stateMessagesPage={props.state._state.messagesPage}/>}/>
+                    <Route path='/dialogs'
+                           render={() => <Dialogs stateMessagesPage={props.state._state.messagesPage}/>}/>
                     <Route path='/profile'
-                           render={() => <Profile stateProfilePage={props.state._state.profilePage} dispatch={props.state.dispatch.bind(props.state)}/>}/>
+                           render={() => <Profile stateProfilePage={props.state._state.profilePage}
+                                                  dispatch={props.state.dispatch.bind(props.state)}/>}/>
                     <Route path='/news' render={() => <News/>}/>
                     <Route path='/music' render={() => <Music/>}/>
                     <Route path='/settings' render={() => <Settings/>}/>

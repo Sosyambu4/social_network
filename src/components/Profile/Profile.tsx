@@ -10,13 +10,13 @@ export type ProfilePropsType = {
 
 }
 
-const Profile = (props:ProfilePropsType) => {
+const Profile = (props: ProfilePropsType) => {
 
     return (
         <div className={s.profile}>
             <ProfileInfo/>
             <MyPosts posts={props.stateProfilePage.posts}
-                    newPostText={props.stateProfilePage.newPostText}
+                     newPostText={props.stateProfilePage.newPostText}
                      dispatch={props.dispatch}/>
         </div>
     )

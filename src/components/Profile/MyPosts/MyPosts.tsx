@@ -13,26 +13,22 @@ export type PropsType = ProfileType & {
 const MyPosts = (props: PropsType) => {
     let postsElements = props.posts.map(p => <Post message={p.message} likesCount={p.likesCount}/>);
 
-// let newPostElement= React.createRef<HTMLTextAreaElement>();
 
     let addPost = () => {
         props.dispatch((addPostAC)(props.newPostText))
     };
 
-    const newTextChangeHandler = (e:ChangeEvent<HTMLTextAreaElement>) => {
+    const newTextChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
         debugger
         props.dispatch((newTextChangeHandlerAC)(e.currentTarget.value))
     }
-/*let onPostChange = () => {
-    props.addPost(props.newPostText)*/
-
 
     return (
         <div className={s.postsBlock}>
             <h3>My posts</h3>
             <div>
                 <div>
-                    <textarea onChange={newTextChangeHandler}  value={props.newPostText}></textarea>
+                    <textarea onChange={newTextChangeHandler} value={props.newPostText}></textarea>
                 </div>
                 <div>
                     <button onClick={addPost}>Add post</button>
