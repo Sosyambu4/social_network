@@ -13,19 +13,24 @@ export type StateType = {
 }
 export type DialogsPageType = {
     dialogs: Array<DialogType>;
-    messages: Array<MessageType>
+    messages: Array<MessageType>;
+    newMessageBody: string
 }
 export type DialogType = {
     name: string;
     id: string;
+
 }
 export type MessageType = {
     message: string;
     id?: string;
+
+
 }
 export type ProfileType = {
     posts: Array<PostsType>
     newPostText: string;
+
 
 }
 export type PostsType = {
@@ -42,7 +47,11 @@ export type StoreType = {
 
 }
 
-export type ActionsTypes = ReturnType<typeof addPostAC> | ReturnType<typeof newTextChangeHandlerAC>
+export type ActionsTypes =
+    ReturnType<typeof addPostAC> |
+    ReturnType<typeof newTextChangeHandlerAC> |
+    ReturnType<typeof UPDATE_NEW_MESSAGE_BODY> |
+    ReturnType<typeof SEND_MESSAGE>
 
 
 export const addPostAC = (postText: string) => {
@@ -57,7 +66,17 @@ export const newTextChangeHandlerAC = (newText: string) => {
         newText: newText
     } as const
 }
-
+export const UPDATE_NEW_MESSAGE_BODY = (body: string) => {
+    return {
+        type: 'UPDATE-NEW-MESSAGE-BODY',
+        body: body
+    } as const
+}
+export const SEND_MESSAGE = () => {
+    return {
+        type:"SEND_MESSAGE"
+    } as const
+}
 
 export const store: StoreType = {
     _state: {
@@ -80,7 +99,8 @@ export const store: StoreType = {
                 {id: v1(), name: 'Pawel'},
                 {id: v1(), name: 'Karolina'},
                 {id: v1(), name: 'Wladyslaw'}
-            ]
+            ],
+             newMessageBody: "",
         }
     },
     callSubscriber() {
@@ -105,6 +125,14 @@ export const store: StoreType = {
         } else if (action.type === 'UPDATE-NEW-POST-TEXT') {
             this._state.profilePage.newPostText = action.newText;
             this.callSubscriber();
+        } else if (action.type === "UPDATE-NEW-MESSAGE-BODY") {
+            this._state.messagesPage.newMessageBody = action.body;
+            this.callSubscriber()
+        } else if (action.type === "SEND_MESSAGE") {
+           let body =  this._state.messagesPage.newMessageBody;
+            this._state.messagesPage.newMessageBody = "";
+            this._state.messagesPage.messages.push({id: v1(), message: body});
+            this.callSubscriber()
         }
         ;
 

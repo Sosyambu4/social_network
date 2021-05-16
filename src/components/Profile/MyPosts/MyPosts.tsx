@@ -9,6 +9,11 @@ export type PropsType = ProfileType & {
     dispatch: (action: ActionsTypes) => void;
 }
 
+/*const addPostActionCreator = () => {
+    return {
+        type: "ADD-POST"
+    }
+}*/
 
 const MyPosts = (props: PropsType) => {
     let postsElements = props.posts.map(p => <Post message={p.message} likesCount={p.likesCount}/>);
@@ -19,7 +24,6 @@ const MyPosts = (props: PropsType) => {
     };
 
     const newTextChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        debugger
         props.dispatch((newTextChangeHandlerAC)(e.currentTarget.value))
     }
 
@@ -28,7 +32,10 @@ const MyPosts = (props: PropsType) => {
             <h3>My posts</h3>
             <div>
                 <div>
-                    <textarea onChange={newTextChangeHandler} value={props.newPostText}></textarea>
+                    <textarea onChange={newTextChangeHandler}
+                              value={props.newPostText}>
+
+                    </textarea>
                 </div>
                 <div>
                     <button onClick={addPost}>Add post</button>
