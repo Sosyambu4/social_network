@@ -24,12 +24,12 @@ const App = (props: AppType) => {
                 <Navbar/>
                 <div className='app-wrapper-content'>
                     <Route path='/dialogs'
-                           render={() => <Dialogs stateMessagesPage={props.state._state.messagesPage}
+                           render={() => <Dialogs stateMessagesPage={props.state.state.messagesPage}
                            dispatch={props.state.dispatch.bind(props.state)}
-                                                  onChange={props.state._state.messagesPage.newMessageBody}
+                                                  onChange={props.state.state.messagesPage.newMessageBody}
                            />}/>
                     <Route path='/profile'
-                           render={() => <Profile stateProfilePage={props.state._state.profilePage}
+                           render={() => <Profile stateProfilePage={props.state.state.profilePage}
                                                   dispatch={props.state.dispatch.bind(props.state)}/>}/>
                     <Route path='/news' render={() => <News/>}/>
                     <Route path='/music' render={() => <Music/>}/>

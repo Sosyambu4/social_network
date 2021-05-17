@@ -4,11 +4,11 @@ import Message from "./Message/Message";
 import DialogsItem from "./DialogItem/DialogItem";
 import {
     ActionsTypes,
-    addPostAC,
     DialogsPageType,
-    newTextChangeHandlerAC, SEND_MESSAGE,
-    UPDATE_NEW_MESSAGE_BODY
+
+
 } from "../../redux/state";
+import {SEND_MESSAGE, UPDATE_NEW_MESSAGE_BODY} from "../../redux/dialogs-reducer";
 
 export type DialogsPropsType = {
     stateMessagesPage: DialogsPageType;
