@@ -14,8 +14,14 @@ export const newTextChangeHandlerAC = (newText: string) => {
     } as const
 }
 
+const initialState = {
+    newPostText: "",
+    posts: [
+        {id: v1(), message: "Hi,how are you?", likesCount: 12},
+        {id: v1(), message: "It's my first post", likesCount: 10}]
+}
 
-export const profileReducer = (state: ProfileType, action: ActionsTypes) => {
+export const profileReducer = (state: ProfileType = initialState, action: ActionsTypes) => {
     switch (action.type) {
         case 'ADD-POST':
             const newPost: PostsType = {

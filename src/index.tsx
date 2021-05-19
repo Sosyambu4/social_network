@@ -17,4 +17,6 @@ export const rerenderEntireTree = () => {
 
 rerenderEntireTree();
 
-store.subscriber(() => rerenderEntireTree());
+store.subscriber(() => {
+   let state = store.getState ();
+    rerenderEntireTree()});
